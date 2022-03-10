@@ -7,9 +7,7 @@ const request = require('request');
 let bot;
 
 async function moveToPos(x, y, z) {
-  console.log('开始寻路');
-  const res = await bot.pathfinder.goto(new GoalNear(x, y, z, 1));
-  console.log(res);
+  await bot.pathfinder.goto(new GoalNear(x, y, z, 1));
 }
 
 function gotoSleep() {
@@ -36,33 +34,42 @@ function startServe() {
   bot.loadPlugin(pathfinder);
 
   bot.on('spawn', () => {
-    console.log('出生');
     mineflayerViewer(bot, { port: 3000, firstPerson: false });
     const mcData = require('minecraft-data')(bot.version);
     const defaultMove = new Movements(bot, mcData);
     bot.pathfinder.setMovements(defaultMove);
-    request('https://v1.hitokoto.cn/?encode=json', {}, (error, response, body) => {
-      if (!error && response.statusCode === 200) {
-        const obj = JSON.parse(body);
-        bot.chat(`${obj.hitokoto}——${obj.from_who}`);
-      }
-    });
+    // request('https://v1.hitokoto.cn/?encode=json', {}, (error, response, body) => {
+    //   if (!error && response.statusCode === 200) {
+    //     const obj = JSON.parse(body);
+    //     let str = obj.hitokoto;
+    //     if (obj.from_who || obj.from) {
+    //       str = `${str}——`;
+    //       if (obj.from_who) {
+    //         str = `${str}${obj.from_who}`;
+    //       }
+    //       if (obj.from) {
+    //         str = `${str}《${obj.from}》`;
+    //       }
+    //     }
+    //     bot.chat(str);
+    //   }
+    // });
     // bot.setControlState('forward', true);
     // setTimeout(() => {
-    //   bot.setControlState('forward', false);
-    // }, 1000);
-    gotoSleep();
+    //   bot.setControlState('forward', true);
+    // }, 500);
+    // gotoSleep();
   });
 
-  bot.on('chat', ({ message }) => {
-    console.log(message);
+  bot.on('chat', (username, message) => {
+    console.log('消息：', username, message);
     if (message === '回家') {
       moveToPos(bot, 113, 64, -520);
     }
   });
 
   bot.on('health', () => {
-    console.log(bot.health);
+    console.log('当前血量：', bot.health);
   });
 
   bot.on('move', () => {
@@ -72,16 +79,12 @@ function startServe() {
     // if (curPos.x !== prePos.x || curPos.y !== prePos.y || curPos.z !== prePos.z) {
     //   console.log(bot.entity.position);
     // }
-    console.log(bot.entity.position);
+    // console.log('当前位置：', bot.entity.position);
   });
 
   bot.on('entityHurt', () => {
-    bot.chat('保护我');
-    console.log('保护我');
-  });
-
-  bot.on('error', (err) => {
-    console.log(err);
+    bot.chat('&6附近有实体受伤，保护我！');
+    console.log('附近有实体受伤，保护我！');
   });
 
   bot.on('sleep', () => {
@@ -95,20 +98,20 @@ function startServe() {
   bot.on('time', () => {
     const timestamp = bot.time.timeOfDay;
     switch (timestamp) {
-      case 0:
-        bot.chat('日出');
+      case 10:
+        bot.chat('&4日出');
         console.log('日出');
         break;
-      case 6000:
-        bot.chat('中午');
+      case 6010:
+        bot.chat('&4中午');
         console.log('中午');
         break;
-      case 12000:
-        bot.chat('日落');
+      case 12010:
+        bot.chat('&4日落');
         console.log('日落');
         break;
-      case 18000:
-        bot.chat('午夜');
+      case 18010:
+        bot.chat('&4午夜');
         console.log('午夜');
         break;
       default: break;
