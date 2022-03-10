@@ -1,0 +1,24 @@
+{
+  "name": "mineplayer-learn",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "minecraft-data": "^2.119.0",
+    "minecraft-protocol-forge": "^1.0.0",
+    "mineflayer": "^4.1.0",
+    "mineflayer-pathfinder": "^1.10.0",
+    "prismarine-viewer": "^1.22.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.10.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.4"
+  }
+}
