@@ -5,6 +5,7 @@ const { pathfinder, Movements, goals: { GoalNear } } = require('mineflayer-pathf
 const request = require('request');
 
 let bot;
+let health;
 
 async function moveToPos(x, y, z) {
   await bot.pathfinder.goto(new GoalNear(x, y, z, 1));
@@ -68,10 +69,6 @@ function startServe() {
     }
   });
 
-  bot.on('health', () => {
-    console.log('当前血量：', bot.health);
-  });
-
   bot.on('move', () => {
     // const curPos = bot.entity.position;
     // const prePos = bot.entity.position.minus(bot.entity.velocity);
@@ -80,11 +77,6 @@ function startServe() {
     //   console.log(bot.entity.position);
     // }
     // console.log('当前位置：', bot.entity.position);
-  });
-
-  bot.on('entityHurt', () => {
-    bot.chat('&6附近有实体受伤，保护我！');
-    console.log('附近有实体受伤，保护我！');
   });
 
   bot.on('sleep', () => {
@@ -99,19 +91,19 @@ function startServe() {
     const timestamp = bot.time.timeOfDay;
     switch (timestamp) {
       case 10:
-        bot.chat('&4日出');
+        bot.chat('日出');
         console.log('日出');
         break;
       case 6010:
-        bot.chat('&4中午');
+        bot.chat('中午');
         console.log('中午');
         break;
       case 12010:
-        bot.chat('&4日落');
+        bot.chat('日落');
         console.log('日落');
         break;
       case 18010:
-        bot.chat('&4午夜');
+        bot.chat('午夜');
         console.log('午夜');
         break;
       default: break;
