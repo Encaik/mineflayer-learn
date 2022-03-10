@@ -3,6 +3,7 @@ const { autoVersionForge } = require('minecraft-protocol-forge');
 const mineflayerViewer = require('prismarine-viewer').mineflayer;
 const { pathfinder, Movements, goals: { GoalNear } } = require('mineflayer-pathfinder');
 const request = require('request');
+const cheerio = require('cheerio');
 
 let bot;
 let health;
@@ -60,6 +61,10 @@ function startServe() {
     //   bot.setControlState('forward', true);
     // }, 500);
     // gotoSleep();
+
+    setTimeout(() => {
+      bot.chat('[s]蒸馏器');
+    }, 5000);
   });
 
   bot.on('chat', (username, message) => {
@@ -67,6 +72,26 @@ function startServe() {
     if (message === '回家') {
       moveToPos(bot, 113, 64, -520);
     }
+  });
+
+  bot.on('message', (jsonMsg) => {
+    jsonMsg.with.forEach(({ text }) => {
+      const searchReg = /\[s\].+/g;
+      if (searchReg.test(text)) {
+        const url = `https://search.mcmod.cn/s?key=${encodeURI(text.split(']')[1])}`;
+        request(url, {}, (err, res, body) => {
+          const $ = cheerio.load(body);
+          const list = $('.result-item .head');
+          console.log(list);
+          // eslint-disable-next-line no-plusplus
+          for (let i = 0; i < 5; i++) {
+            const el = list.eq(i);
+            bot.chat(`${el.text()}`);
+            console.log(`${el.text()}`);
+          }
+        });
+      }
+    });
   });
 
   bot.on('move', () => {
