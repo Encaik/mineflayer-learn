@@ -14,7 +14,8 @@
     "minecraft-protocol-forge": "^1.0.0",
     "mineflayer": "^4.1.0",
     "mineflayer-pathfinder": "^1.10.0",
-    "prismarine-viewer": "^1.22.0"
+    "prismarine-viewer": "^1.22.0",
+    "request": "^2.88.2"
   },
   "devDependencies": {
     "eslint": "^8.10.0",
